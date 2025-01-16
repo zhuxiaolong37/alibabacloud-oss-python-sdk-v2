@@ -27,15 +27,6 @@ def main():
 
     down_loader = client.downloader()
 
-    # down_loader = client.downloader(part_size=100*1024,
-    #                                 parallel_num=5,
-    #                                 block_size=1024,
-    #                                 use_temp_file=True,
-    #                                 enable_checkpoint=True,
-    #                                 checkpoint_dir=args.file_path,
-    #                                 verify_data=True)
-
-
     with open(args.file_path, 'wb') as f:
         result = down_loader.download_to(oss.GetObjectRequest(
             bucket=args.bucket,
