@@ -37,11 +37,17 @@ def _validate_query_vectors_fusion_request(request: models.QueryVectorsFusionReq
     if isinstance(knn, dict):
         return
 
-    if isinstance(knn, list) and all(isinstance(item, dict) for item in knn):
-        return
+    invalid_type = type(knn).__name__
+    if isinstance(knn, list):
+        for item in knn:
+            if not isinstance(item, dict):
+                invalid_type = type(item).__name__
+                break
+        else:
+            return
 
     raise exceptions.ParamInvalidError(
-        field='knn, expected a dict or a list of dict, got %s' % type(knn).__name__)
+        field='knn, expected a dict or a list of dict, got %s' % invalid_type)
 
 
 def query_vectors_fusion(client: _SyncClientImpl, request: models.QueryVectorsFusionRequest, **kwargs) -> models.QueryVectorsFusionResult:
